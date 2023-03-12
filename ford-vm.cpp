@@ -12,14 +12,13 @@
 int main (int argc, char const *argv[]) {
     
     FordVM vm;
-    
-    vm.exec(R"(
+    auto result = vm.exec(R"(
         
         42
     
     )");
     
-    // std::cout << result.number << std::endl;
+    std::cout << "result.number: " << result.number << std::endl;
     
     std::cout << "All done!\n";
     

@@ -46,11 +46,13 @@ public:
         // 1. parse AST
         // 2. compile AST to bytecode
         
-        constants.push_back(NUMBER(42));
+        constants.push_back(NUMBER(2));
+        constants.push_back(NUMBER(3));
         
-        code = {OP_CONST, 0, OP_HALT};
+        code = {OP_CONST, 0, OP_CONST, 1, OP_ADD, OP_HALT};
         
         ip = &code[0];
+        sp = &stack[0];
         
         return eval();
     }
@@ -60,14 +62,19 @@ public:
             
             auto opcode = READ_BYTE();
             
-            std::cout << "opcode: " << unsigned(opcode);
-            
             switch (opcode) {
                 case OP_HALT:
                     return pop();
                 case OP_CONST:
                     push(GET_CONST());
-                    return pop();
+                    break;
+                case OP_ADD: {
+                    auto op2 = AS_NUMBER(pop());
+                    auto op1 = AS_NUMBER(pop());
+                    auto result = op1 + op2;
+                    push(NUMBER(result));
+                    break;
+                }
                 default:
                     DIE << "unknown opcode: " << std::hex << std::setfill('0') << std::setw(2) << unsigned(opcode);
             }

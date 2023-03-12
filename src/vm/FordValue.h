@@ -20,5 +20,6 @@ struct FordValue {
 };
 
 #define NUMBER(value) ((FordValue){FordValueType::NUMBER, .number = value})
+#define AS_NUMBER(fordValue) ((double)(fordValue).number)
 
 #endif /* FordValue_h */
