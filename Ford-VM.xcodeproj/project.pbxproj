@@ -1,0 +1,98 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXFileReference section */
+		EA1C17CF29B79C3E000EEAD8 /* FordVM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FordVM.h; sourceTree = "<group>"; };
+		EA1C17D029B79DCB000EEAD8 /* OpCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpCode.h; sourceTree = "<group>"; };
+		EA1C17D129B79F48000EEAD8 /* ford-vm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ford-vm.cpp"; sourceTree = "<group>"; };
+		EA6E8ABB29BE206C00056C6A /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		EA6E8ABC29BE2A2B00056C6A /* FordValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FordValue.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		EA1C17CD29B79C1F000EEAD8 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EA1C17CE29B79C1F000EEAD8 /* vm */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		EA1C17CE29B79C1F000EEAD8 /* vm */ = {
+			isa = PBXGroup;
+			children = (
+				EA1C17CF29B79C3E000EEAD8 /* FordVM.h */,
+				EA1C17D029B79DCB000EEAD8 /* OpCode.h */,
+				EA6E8ABB29BE206C00056C6A /* Logger.h */,
+				EA6E8ABC29BE2A2B00056C6A /* FordValue.h */,
+			);
+			path = vm;
+			sourceTree = "<group>";
+		};
+		EAE1EEA129B27BD700901B08 = {
+			isa = PBXGroup;
+			children = (
+				EA1C17D129B79F48000EEAD8 /* ford-vm.cpp */,
+				EA1C17CD29B79C1F000EEAD8 /* src */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		EAE1EEA229B27BD700901B08 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+			};
+			buildConfigurationList = EAE1EEA529B27BD700901B08 /* Build configuration list for PBXProject "Ford-VM" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EAE1EEA129B27BD700901B08;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		EAE1EEA629B27BD700901B08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		EAE1EEA729B27BD700901B08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EAE1EEA529B27BD700901B08 /* Build configuration list for PBXProject "Ford-VM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE1EEA629B27BD700901B08 /* Debug */,
+				EAE1EEA729B27BD700901B08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EAE1EEA229B27BD700901B08 /* Project object */;
+}
