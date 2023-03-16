@@ -19,6 +19,12 @@
 
 #define READ_BYTE() *ip++
 #define GET_CONST() constants[READ_BYTE()]
+#define BINARY_OP(operator) \
+do {\
+    auto op2 = AS_NUMBER(pop());\
+    auto op1 = AS_NUMBER(pop());\
+    push(NUMBER(op1 operator op2));\
+} while(false)
 
 class FordVM {
     
@@ -46,9 +52,13 @@ public:
         // 1. parse AST
         // 2. compile AST to bytecode
         
-        constants.push_back(NUMBER(2));
-        constants.push_back(NUMBER(3));
+        // constants.push_back(NUMBER(10));
+        // constants.push_back(NUMBER(3));
+        // constants.push_back(NUMBER(10));
+        // code = {OP_CONST, 0, OP_CONST, 1, OP_MUL, OP_CONST, 2, OP_SUB, OP_HALT};
         
+        constants.push_back(ALLOC_STRING("Hello, "));
+        constants.push_back(ALLOC_STRING("world!"));
         code = {OP_CONST, 0, OP_CONST, 1, OP_ADD, OP_HALT};
         
         ip = &code[0];
@@ -69,10 +79,31 @@ public:
                     push(GET_CONST());
                     break;
                 case OP_ADD: {
-                    auto op2 = AS_NUMBER(pop());
-                    auto op1 = AS_NUMBER(pop());
-                    auto result = op1 + op2;
-                    push(NUMBER(result));
+                    auto op2 = pop();
+                    auto op1 = pop();
+                    
+                    if(IS_NUMBER(op1) && IS_NUMBER(op2)){ // numeric addition
+                        auto v1 = AS_NUMBER(op1);
+                        auto v2 = AS_NUMBER(op2);
+                        push(NUMBER(v1 + v2));
+                    }
+                    else if(IS_STRING(op1) && IS_STRING(op2)){ // string concatenation
+                        auto s1 = AS_CPPSTRING(op1);
+                        auto s2 = AS_CPPSTRING(op2);
+                        push(ALLOC_STRING(s1 + s2));
+                    }
+                    break;
+                }
+                case OP_SUB: {
+                    BINARY_OP(-);
+                    break;
+                }
+                case OP_MUL: {
+                    BINARY_OP(*);
+                    break;
+                }
+                case OP_DIV: {
+                    BINARY_OP(/);
                     break;
                 }
                 default:

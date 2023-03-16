@@ -18,8 +18,7 @@ int main (int argc, char const *argv[]) {
     
     )");
     
-    std::cout << "result.number: " << result.number << std::endl;
-    
+    std::cout << "result.string: " << AS_CPPSTRING(result) << std::endl;
     std::cout << "All done!\n";
     
     return 0;
