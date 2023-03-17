@@ -1,9 +1,12 @@
 
 # compile:
 
-❯ clang++ -std=c++17 -Wall -ggdb3 ./ford-vm.cpp -o ./ford-vm
+```
+❯ ./compile
+```
 
-# run:
+# compile & run:
 
-❯ ./ford-vm
-
+```
+❯ ./run
+```
