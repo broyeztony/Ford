@@ -16,9 +16,13 @@
 #include "OpCode.h"
 #include "Logger.h"
 #include "FordValue.h"
+#include "../parser/FordParser.h"
 
-#define READ_BYTE() *ip++
-#define GET_CONST() constants[READ_BYTE()]
+using syntax::FordParser;
+
+#define STACK_LIMIT     512
+#define READ_BYTE()     *ip++
+#define GET_CONST()     constants[READ_BYTE()]
 #define BINARY_OP(operator) \
 do {\
     auto op2 = AS_NUMBER(pop());\
@@ -29,10 +33,10 @@ do {\
 class FordVM {
     
 public:
-    FordVM() {}
+    FordVM() : parser(std::make_unique<FordParser>()) {}
 
     void push(const FordValue& value) {
-        if((size_t)(sp - stack.begin()) == 512) {
+        if((size_t)(sp - stack.begin()) == STACK_LIMIT) {
             DIE << "push(): stack overflow.\n";
         }
         *sp = value;
@@ -50,6 +54,10 @@ public:
     FordValue exec(const std::string &program) {
         
         // 1. parse AST
+        auto ast = parser->parse(program);
+        
+        std::cout << "ast.number: " << ast.number << std::endl;
+        
         // 2. compile AST to bytecode
         
         // constants.push_back(NUMBER(10));
@@ -112,12 +120,13 @@ public:
         }
     }
     
-    uint8_t* ip;
-    FordValue* sp;
+    std::unique_ptr<FordParser>         parser;
+    uint8_t*                            ip;
+    FordValue*                          sp;
     
-    std::array<FordValue, 512> stack;
-    std::vector<uint8_t> code;
-    std::vector<FordValue> constants;
+    std::array<FordValue, STACK_LIMIT>  stack;
+    std::vector<uint8_t>                code;
+    std::vector<FordValue>              constants;
 };
 
 #endif /* ForVM_h */

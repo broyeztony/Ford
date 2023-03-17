@@ -14,7 +14,7 @@ int main (int argc, char const *argv[]) {
     FordVM vm;
     auto result = vm.exec(R"(
         
-        42
+        (+ "hello, " "world!")
     
     )");
     
