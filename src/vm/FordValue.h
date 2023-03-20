@@ -17,6 +17,7 @@ enum class FordValueType {
 
 enum class ObjectType {
     STRING,
+    CODE,
 };
 
 struct Object {
@@ -38,6 +39,15 @@ struct FordValue {
     };
 };
 
+struct CodeObject : public Object {
+    CodeObject(const std::string& name)
+    : Object(ObjectType::CODE), name(name) {}
+    
+    std::string                 name;
+    std::vector<FordValue>      constants;
+    std::vector<uint8_t>        code;
+};
+
 #define NUMBER(value) ((FordValue){FordValueType::NUMBER, .number = value})
 #define AS_NUMBER(fordValue) ((double)(fordValue).number)
 #define AS_OBJECT(fordValue) ((Object*)(fordValue).object)
@@ -47,6 +57,10 @@ struct FordValue {
 #define AS_STRING(fordValue) ((StringObject*)(fordValue).object)
 #define AS_CPPSTRING(fordValue) (AS_STRING(fordValue)->string)
 
+#define ALLOC_CODE(name) ((FordValue){FordValueType::OBJECT, .object = (Object*)new CodeObject(name)})
+#define AS_CODE(fordValue) ((CodeObject*)(fordValue).object)
+
+
 // type checking
 #define IS_NUMBER(fordValue) ((fordValue).type == FordValueType::NUMBER)
 #define IS_OBJECT(fordValue) ((fordValue).type == FordValueType::OBJECT)
@@ -55,5 +69,6 @@ struct FordValue {
     (IS_OBJECT(fordValue) && AS_OBJECT(fordValue)->type == objectType)
 
 #define IS_STRING(fordValue) IS_OBJECT_TYPE(fordValue, ObjectType::STRING)
+#define IS_CODE(fordValue) IS_OBJECT_TYPE(fordValue, ObjectType::CODE)
 
 #endif /* FordValue_h */

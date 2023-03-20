@@ -14,11 +14,11 @@ int main (int argc, char const *argv[]) {
     FordVM vm;
     auto result = vm.exec(R"(
         
-        (+ "hello, " "world!")
+        "hello"
     
     )");
     
-    std::cout << "result.string: " << AS_CPPSTRING(result) << std::endl;
+    std::cout << "result: " << AS_CPPSTRING(result) << std::endl;
     std::cout << "All done!\n";
     
     return 0;

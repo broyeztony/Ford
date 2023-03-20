@@ -17,12 +17,13 @@
 #include "Logger.h"
 #include "FordValue.h"
 #include "../parser/FordParser.h"
+#include "../compiler/FordCompiler.h"
 
 using syntax::FordParser;
 
 #define STACK_LIMIT     512
 #define READ_BYTE()     *ip++
-#define GET_CONST()     constants[READ_BYTE()]
+#define GET_CONST()     co->constants[READ_BYTE()]
 #define BINARY_OP(operator) \
 do {\
     auto op2 = AS_NUMBER(pop());\
@@ -33,7 +34,7 @@ do {\
 class FordVM {
     
 public:
-    FordVM() : parser(std::make_unique<FordParser>()) {}
+    FordVM() : parser(std::make_unique<FordParser>()), compiler(std::make_unique<FordCompiler>()) {}
 
     void push(const FordValue& value) {
         if((size_t)(sp - stack.begin()) == STACK_LIMIT) {
@@ -56,20 +57,19 @@ public:
         // 1. parse AST
         auto ast = parser->parse(program);
         
-        std::cout << "ast.number: " << ast.number << std::endl;
-        
         // 2. compile AST to bytecode
+        co = compiler->compile(ast);
         
         // constants.push_back(NUMBER(10));
         // constants.push_back(NUMBER(3));
         // constants.push_back(NUMBER(10));
         // code = {OP_CONST, 0, OP_CONST, 1, OP_MUL, OP_CONST, 2, OP_SUB, OP_HALT};
         
-        constants.push_back(ALLOC_STRING("Hello, "));
-        constants.push_back(ALLOC_STRING("world!"));
-        code = {OP_CONST, 0, OP_CONST, 1, OP_ADD, OP_HALT};
+        // constants.push_back(ALLOC_STRING("Hello, "));
+        // constants.push_back(ALLOC_STRING("world!"));
+        // code = {OP_CONST, 0, OP_CONST, 1, OP_ADD, OP_HALT};
         
-        ip = &code[0];
+        ip = &co->code[0];
         sp = &stack[0];
         
         return eval();
@@ -121,12 +121,12 @@ public:
     }
     
     std::unique_ptr<FordParser>         parser;
+    std::unique_ptr<FordCompiler>       compiler;
     uint8_t*                            ip;
     FordValue*                          sp;
     
+    CodeObject*                         co;
     std::array<FordValue, STACK_LIMIT>  stack;
-    std::vector<uint8_t>                code;
-    std::vector<FordValue>              constants;
 };
 
 #endif /* ForVM_h */
