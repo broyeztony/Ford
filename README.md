@@ -10,3 +10,9 @@
 ```
 ❯ ./run
 ```
+
+# debug with LLDB
+
+```
+❯ ./debug
+```
