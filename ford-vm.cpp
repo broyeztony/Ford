@@ -10,16 +10,16 @@
 #include <iostream>
 
 int main (int argc, char const *argv[]) {
-    
+
     FordVM vm;
     auto result = vm.exec(R"(
-        
-        "hello"
-    
+
+        (* (- 6 1) (+ (/ 20 2) (+  4 2)))
+
     )");
-    
-    std::cout << "result: " << AS_CPPSTRING(result) << std::endl;
+
+    std::cout << "result: " << AS_NUMBER(result) << std::endl;
     std::cout << "All done!\n";
-    
+
     return 0;
 }
