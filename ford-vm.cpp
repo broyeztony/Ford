@@ -18,7 +18,7 @@ int main (int argc, char const *argv[]) {
 
     )");
 
-    std::cout << "result: " << AS_NUMBER(result) << std::endl;
+    std::cout << "result: " << result << std::endl;
     std::cout << "All done!\n";
 
     return 0;

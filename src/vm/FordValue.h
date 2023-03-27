@@ -42,7 +42,7 @@ struct FordValue {
 struct CodeObject : public Object {
     CodeObject(const std::string& name)
     : Object(ObjectType::CODE), name(name) {}
-    
+
     std::string                 name;
     std::vector<FordValue>      constants;
     std::vector<uint8_t>        code;
@@ -70,5 +70,37 @@ struct CodeObject : public Object {
 
 #define IS_STRING(fordValue) IS_OBJECT_TYPE(fordValue, ObjectType::STRING)
 #define IS_CODE(fordValue) IS_OBJECT_TYPE(fordValue, ObjectType::CODE)
+
+std::string fordValueToTypeString(const FordValue& value) {
+    if (IS_NUMBER(value)) {
+        return "NUMBER";
+    } else if (IS_STRING(value)) {
+        return "STRING";
+    } else if (IS_CODE(value)) {
+        return "CODE";
+    } else {
+        DIE << "fordValueToTypeString: unknown type " << (int)value.type;
+    }
+    return "";
+}
+
+std::string fordValueToConstantString(const FordValue& value) {
+    std::stringstream ss;
+    if (IS_NUMBER(value)) {
+        ss << value.number;
+    } else if (IS_STRING(value)) {
+        ss << '"' << AS_CPPSTRING(value) << '"';
+    } else if (IS_CODE(value)) {
+        auto code = AS_CODE(value);
+        ss << "code " << code << ":" << code->name;
+    } else {
+      DIE << "fordValueToConstantString: unknown type " << (int)value.type;
+    }
+    return ss.str();
+}
+
+std::ostream& operator<<(std::ostream &os, const FordValue &value) {
+    return os << "FordValue (" << fordValueToTypeString(value) << "): " << fordValueToConstantString(value);
+}
 
 #endif /* FordValue_h */
