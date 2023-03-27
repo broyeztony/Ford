@@ -10,6 +10,8 @@
 
 #include "../vm/FordValue.h"
 
+using namespace std;
+
 #define ALLOC_CONST(tester, converter, allocator, value)    \
     do {                                                    \
         for(auto i = 0 ; i < co->constants.size() ; i++) {  \
@@ -62,6 +64,13 @@ public:
                 break;
 
             case ExpType::SYMBOL:
+                if (exp.string == "true" || exp.string == "false") {
+                    emit(OP_CONST);
+                    emit(booleanConstIdx(exp.string == "true" ? true : false));
+
+                } else { // TODO: variables
+
+                }
                 break;
 
             case ExpType::LIST:
@@ -77,6 +86,11 @@ public:
                         GEN_BINARY_OP(OP_MUL);
                     } else if (op == "/") {
                         GEN_BINARY_OP(OP_DIV);
+                    } else if (compareOps_.count(op) != 0) {
+                        gen(exp.list[1]);
+                        gen(exp.list[2]);
+                        emit(OP_COMPARE);
+                        emit(compareOps_[op]);
                     }
                 }
                 break;
@@ -95,11 +109,21 @@ private:
         return co->constants.size() - 1;
     }
 
+    size_t booleanConstIdx(bool value) {
+        ALLOC_CONST(IS_BOOLEAN, AS_BOOLEAN, BOOLEAN, value);
+        return co->constants.size() - 1;
+    }
+
     void emit(uint8_t code) {
         co->code.push_back(code);
     }
 
     CodeObject* co;
+    static map<string, uint8_t> compareOps_;
+};
+
+map<string, uint8_t> FordCompiler::compareOps_ {
+    {"<", 0},{">", 1},{"<=", 2},{">=", 3},{"==", 4},{"!=", 5},
 };
 
 #endif /* FordCompiler_h */

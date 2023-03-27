@@ -14,7 +14,7 @@ int main (int argc, char const *argv[]) {
     FordVM vm;
     auto result = vm.exec(R"(
 
-        (* (- 6 1) (+ (/ 20 2) (+  4 2)))
+        (< 10 (+ 5 5))
 
     )");
 
